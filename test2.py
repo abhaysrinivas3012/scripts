@@ -1,9 +1,9 @@
 import xlsxwriter
-workbook = xlsxwriter.Workbook('pressure.xlsx')
-out = open('tp.csv','w')
+
 inp = open('input.dat','r')
 ht = open('heights.dat','r')
 case_name = 'case4_'
+workbook = xlsxwriter.Workbook(case_name+'pressure.xlsx')
 series = inp.readlines()
 
 import os
@@ -43,52 +43,25 @@ for i in range(len(series)):
 	line = series[i]
 	line = line.strip('\n')
 	series_names = line.split(',')
-	sheet_name = series_names[0]
-	c1 = case_name+series_names[1]+'.TP!$A$2:$A$30000'
-	c2 = case_name+series_names[2]+'.TP!$A$2:$A$30000'
-	c3 = case_name+series_names[3]+'.TP!$A$2:$A$30000'
-	c4 = case_name+series_names[4]+'.TP!$A$2:$A$30000'
-	c5 = case_name+series_names[5]+'.TP!$A$2:$A$30000'
-
-	v1 = case_name+series_names[1]+'.TP!$B$2:$B$30000'
-	v2 = case_name+series_names[2]+'.TP!$B$2:$B$30000'
-	v3 = case_name+series_names[3]+'.TP!$B$2:$B$30000'
-	v4 = case_name+series_names[4]+'.TP!$B$2:$B$30000'
-	v5 = case_name+series_names[5]+'.TP!$B$2:$B$30000'
-
-	print c5
-	worksheet = workbook.add_worksheet(sheet_name)
-	chart1 = workbook.add_chart({'type': 'scatter','subtype':'straight'})
-
-	chart1.add_series({'name':	hts[0+i*5],
-			   'categories':c1,
-			   'values'    :v1,
-			   })
+	for j in range(len(series_name)):
+                sheet_name = series_names[j]
+                c1 = case_name+series_names[1]+'.TP!$A$2:$A$30000'
 	
-	chart1.add_series({'name':	hts[1+i*5],
-			   'categories':c2,
-			   'values'    :v2,
-			   })
-		   
-	chart1.add_series({'name':	hts[2+i*5],
-			   'categories':c3,
-			   'values'    :v3,
-			   })
-		   
-	chart1.add_series({'name':	hts[3+i*5],
-			   'categories':c4,
-			   'values'    :v4,
-			   })
+                v1 = case_name+series_names[1]+'.TP!$B$2:$B$30000'
+	
+	
+                worksheet = workbook.add_worksheet(sheet_name)
+                chart1 = workbook.add_chart({'type': 'scatter','subtype':'straight'})
 
-	chart1.add_series({'name':	hts[4+i*5],
-			   'categories':c5,
-			   'values'    :v5,
-			   })
-
+                chart1.add_series({'name':	hts[j+i*len(series)],
+                                   'categories':c1,
+                                   'values'    :v1,
+                                   })
+	
 	chart1.set_title({'name':sheet_name})
-	chart1.set_x_axis({'name':'time(s)'})
-	chart1.set_y_axis({'name':'Pressure(Pa)','min':0})
-	worksheet.insert_chart('A1', chart1,{'x_scale':2,'y_scale':2})
+        chart1.set_x_axis({'name':'time(s)'})
+        chart1.set_y_axis({'name':'Pressure(Pa)','min':0})
+        worksheet.insert_chart('A1', chart1,{'x_scale':2,'y_scale':2})
 
 
 
@@ -125,15 +98,9 @@ for root,dirs,files in os.walk(directory):
 			worksheet.write_column('D2',maxpt)
 			time.append(t)
 			pres.append(p)			
-			f.close()
-print max_pres_time			
+			f.close()			
 worksheet1.write_column('B2',max_pres_time)
-worksheet1.write_column('D2',max_pres)			
-
-
-print len(time),len(pres)
-print len(time[0]),len(pres[0])
-print pres[0][1]
+worksheet1.write_column('D2',max_pres)
 
 out.close()
 workbook.close()
