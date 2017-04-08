@@ -43,11 +43,12 @@ for i in range(len(series)):
 	line = series[i]
 	line = line.strip('\n')
 	series_names = line.split(',')
-	for j in range(len(series_name)):
-                sheet_name = series_names[j]
-                c1 = case_name+series_names[1]+'.TP!$A$2:$A$30000'
+	sheet_name = series_names[i]
+	for j in range(1:len(series_name)):
+                
+                c1 = case_name+series_names[j]+'.TP!$A$2:$A$30000'
 	
-                v1 = case_name+series_names[1]+'.TP!$B$2:$B$30000'
+                v1 = case_name+series_names[j]+'.TP!$B$2:$B$30000'
 	
 	
                 worksheet = workbook.add_worksheet(sheet_name)
