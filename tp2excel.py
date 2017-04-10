@@ -45,10 +45,10 @@ for i in range(len(series)):
 	sheet_name = series_names[0]
 	worksheet = workbook.add_worksheet(sheet_name)
 	chart1 = workbook.add_chart({'type': 'scatter','subtype':'straight'})
-	for j in range(1,len(series_names)):    
+	for j in range(1,len(series_names)):
 		c1 = case_name+series_names[j]+'.TP!$A$2:$A$30000'
 		v1 = case_name+series_names[j]+'.TP!$B$2:$B$30000'
-		chart1.add_series({'name':	hts[j+i*len(series)],
+		chart1.add_series({'name':	hts[(j-1)+i*(len(series_names)-1)],
                            'categories':c1,
                            'values'    :v1,
                            })
@@ -93,5 +93,5 @@ for root,dirs,files in os.walk(directory):
 worksheet1.write_column('B2',max_pres_time)
 worksheet1.write_column('D2',max_pres)
 
-out.close()
+
 workbook.close()
